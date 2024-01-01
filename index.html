@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Starting Page Calculator</title>
+    <style>
+        form {
+            max-width: 40%;
+            margin: 0 auto;
+            border: 2px solid lightgray;
+            border-radius: 5px;
+        }
+
+        label {
+            display: block;
+            padding: 10px;
+        }
+
+        input[type="number"] {
+            width: 40%;
+            margin-left: 10px;
+            margin-bottom: 10px;
+            padding: 10px;
+        }
+
+        #total_pages,
+        #spare_pages,
+        #starting_page {
+            display: block;
+            margin: 10px;
+            font-weight: bold;
+            font-size:x-large;
+        }
+        #result {
+            background-color: lightgray;
+            padding: 10px;
+            margin-top: 10px;
+        }
+        h1 {
+            background-color: lightgray;
+            padding: 10px;
+            margin: 0;
+        }
+        body {
+            font-family: "Arial", sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <form>
+        <h1>FIND YOUR STARTING PAGE</h1>
+        <label for="last_page">Enter the number of the last printed numbered page at the back of your book.</label>
+        <input type="number" name="last_page" min=0>
+        
+        <label for="unumbered_front">Enter the number of un-numbered pages (both sides of leaf) at the front of your book.</label>
+        <input type="number" name="unumbered_front" min=0>
+        
+        <label for="unumbered_back">Enter the number of un-numbered pages (both sides of leaf) at the back of your book.</label>
+        <input type="number" name="unumbered_back" min=0>
+        <br>
+
+        <div id="result">
+            The total number of useable pages in your book is:
+            <span id="total_pages">0</span>
+        </div>
+
+        <label for="pattern_pages">Enter the number of PAGES (not folds) required for your pattern. This will be printed in your pattern details.</label>
+        <input type="number" name="pattern_pages" min=0>
+        <br>
+
+        <div id="result">
+            The total number of spare PAGES in your book is:
+            <span id="spare_pages">0</span>
+            The number of PAGES (both sides) you need to count from your first useable page is:
+            <span id="starting_page">0</span>
+            (This is your starting page. If it is an odd number start on the next right hand page)
+        </div>
+    </form>
+    <script>
+        const last_page = document.querySelector('input[name="last_page"]');
+        const unumbered_front = document.querySelector('input[name="unumbered_front"]');
+        const unumbered_back = document.querySelector('input[name="unumbered_back"]');
+        const total_pages = document.querySelector('#total_pages');
+        const pattern_pages = document.querySelector('input[name="pattern_pages"]');
+        const spare_pages = document.querySelector('#spare_pages');
+        const starting_page = document.querySelector('#starting_page');
+        const form = document.querySelector('form');
+        total_pages.innerHTML = parseInt(last_page.value || 0) + parseInt(unumbered_front.value || 0) + parseInt(unumbered_back.value || 0);
+        spare_pages.innerHTML = parseInt(total_pages.innerHTML) - parseInt(pattern_pages.value || 0);
+        starting_page.innerHTML = Math.ceil(parseInt(spare_pages.innerHTML) / 2);
+        
+        form.addEventListener('input', function() {
+            total_pages.innerHTML = parseInt(last_page.value || 0) + parseInt(unumbered_front.value || 0) + parseInt(unumbered_back.value || 0);
+            spare_pages.innerHTML = parseInt(total_pages.innerHTML) - parseInt(pattern_pages.value || 0);
+            starting_page.innerHTML = Math.ceil(parseInt(spare_pages.innerHTML) / 2);
+        });
+    </script>
+</body>
+</html>
